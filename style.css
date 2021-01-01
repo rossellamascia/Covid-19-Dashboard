@@ -1,0 +1,68 @@
+* {
+    font-family: 'Jost', sans-serif;
+}
+
+:root {
+    --main-color: #1e1e2c;
+    --secondary-color: #272a3c;
+    --accent-color: #fe744f;
+}
+
+.bg-main {
+    background-color: var(--main-color);
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.text-accent {
+    color: var(--accent-color) !important;
+}
+
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+
+body {
+    background-color: var(--main-color);
+}
+
+.card-custom {
+    box-shadow: 2px 2px 6px #000000 !important;
+    transition: 0.2s;
+    background-color: #fff;
+}
+
+.card-custom:hover {
+    box-shadow: 2px 2px 6px #6b6969 !important;
+    transform: translateY(-2px) !important;
+    -webkit-transform: translateY(-2px) !important;
+}
+
+.card-custom:active {
+    box-shadow: inset 1px 1px 6px #535353 !important;
+}
+
+/* scrol-bar */
+.scroll-regioni {
+    height: 400px;
+    overflow-y: scroll;
+    outline-style: hidden;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
