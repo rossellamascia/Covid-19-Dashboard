@@ -68,7 +68,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                         
                         </div>
                         <div class="col-12">
-                            <p class="fs-3"><span class="fw-bold">Totale casi:</span> ${dataAboutRegion.totale_casi}</p>
+                            <p><span class="fw-bold">Totale casi:</span> ${dataAboutRegion.totale_casi}</p>
                             <p>Nuovi positivi: ${dataAboutRegion.nuovi_positivi}</p>
                             <p>Deceduti: ${dataAboutRegion.deceduti}</p>
                             <p>Guariti: ${dataAboutRegion.dimessi_guariti}</p>
@@ -76,8 +76,42 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                             <p>Isolamento domiciliare: ${dataAboutRegion.isolamento_domiciliare}</p>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h6 class="mb-0 mt-5 fs-5 p-2 bg-accent d-inline-flex text-white rounded-top">Trend nuovi casi</h6>
+                            <div id="trendNew" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
+                        </div>
+                        <div class="col-12">
+                            <h6 class="mb-0 mt-5 fs-5 p-2 bg-accent d-inline-flex text-white rounded-top">Trend decessi</h6>
+                            <div id="trendDeath" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
+                        </div>
+                    </div>
                 </div>
             `
+            let trendData = sorted.map(el=>el).reverse().filter(el => el.denominazione_regione == region).map(el=> [el.data,el.nuovi_positivi,el.dimessi_guariti])
+            
+            //trend nuovi casi
+            let maxNew = Math.max(...trendData.map(el=>el[1]))
+            let trendNew = document.querySelector('#trendNew')
+            trendData.forEach(el=>{
+                let colNew = document.createElement('div')
+                colNew.classList.add('d-inline-block','pin-new')
+                colNew.style.height = `${80 * el[1]/maxNew}%`
+                trendNew.appendChild(colNew)
+            })
+            //trend decessi
+            let maxDeath = Math.max(...trendData.map(el=>el[2]))
+            let trendDeath = document.querySelector('#trendDeath')
+            trendData.forEach(el=>{
+                let colNew = document.createElement('div')
+                colNew.classList.add('d-inline-block','pin-new')
+                colNew.style.height = `${el[2]/maxNew}%`
+                trendDeath.appendChild(colNew)
+            })
+            console.log(maxDeath);
+
+
+
             //chiusura per mobile
             let modalClose = document.querySelector('#close')
             modalClose.addEventListener('click', ()=>{
