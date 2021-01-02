@@ -45,28 +45,38 @@ body {
 }
 
 /* scrol-bar */
+
 .scroll-regioni {
     height: 400px;
     overflow-y: scroll;
     outline-style: hidden;
 }
+
 /* width */
+
 ::-webkit-scrollbar {
     width: 10px;
 }
+
 /* Track */
+
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
+
 /* Handle */
+
 ::-webkit-scrollbar-thumb {
     background: #888;
 }
+
 /* Handle on hover */
+
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-.modal-custom{
+
+.modal-custom {
     position: fixed;
     left: 0px;
     top: 0px;
@@ -79,15 +89,62 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
     transition: 0.2s;
 }
-.modal-custom-content{
+
+.modal-custom-content {
     background-color: #fff;
     margin: auto;
     width: 70%;
     padding: 30px;
 }
 
-.modal-custom.active{
+.modal-custom.active {
     z-index: 10;
     opacity: 1;
     display: block;
+}
+
+/* grafico */
+
+.chart-area {
+    position: relative;
+    height: 10rem;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .chart-area {
+        height: 20rem;
+    }
+}
+
+.chart-bar {
+    position: relative;
+    height: 10rem;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .chart-bar {
+        height: 20rem;
+    }
+}
+
+.chart-pie {
+    position: relative;
+    height: 15rem;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .chart-pie {
+        height: calc(20rem - 43px) !important;
+    }
+}
+
+.close{
+    float: right;
+    cursor: pointer;
+    font-size: 20px;
+    padding-top: 0px;
+    margin-top: 0px;
 }

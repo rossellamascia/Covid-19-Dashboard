@@ -8,7 +8,9 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
     console.log(sorted);
     //formattazione data dell'ultimo aggiornamento
     let lastUpdatedFormatted = lastUpdated.split("T")[0].split("-").reverse().join("/")
-    document.getElementById("data").innerHTML = `Dati aggiornati al: ${lastUpdatedFormatted}` 
+    let lastUpdatedFormattedHour = lastUpdated.split("T")[1]
+    document.getElementById("data").innerHTML = `Dati aggiornati al: ${lastUpdatedFormatted} - ${lastUpdatedFormattedHour}`
+
     //regione con più casi
     let lastUpdatedData = sorted.filter(el => el.data == lastUpdated).sort((a,b) => b.nuovi_positivi - a.nuovi_positivi)
 
@@ -21,8 +23,8 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
     //morti totali
     let totalDeath = lastUpdatedData.map(el=>el.deceduti).reduce((t,n)=>t+n)
     document.getElementById("totalDeath").innerHTML = totalDeath
-    //tatale positivi
-    let totalPositive = lastUpdatedData.map(el=>el.deceduti).reduce((t,n)=>t+n)
+    //totale positivi
+    let totalPositive = lastUpdatedData.map(el=>el.nuovi_positivi).reduce((t,n)=>t+n)
     document.getElementById("totalPositive").innerHTML = totalPositive
 
     //card regioni positivi oggi
@@ -30,7 +32,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
     lastUpdatedData.forEach(el => {
         let div =  document.createElement('div')
-        div.classList.add('col-12','col-md-6','my-4')
+        div.classList.add('col-12','col-md-3','my-4')
         div.innerHTML =
         `
             <div class="card-custom p-3 pb-0 h-100 rounded-3" data-region="${el.denominazione_regione}">
@@ -42,10 +44,9 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         
     });
 
-    console.log(totalCases);
-
     let modal = document.querySelector('.modal-custom')
     let modalContent = document.querySelector('.modal-custom-content')
+    
 
    //apertura modale
     document.querySelectorAll('[data-region]').forEach(el=>{
@@ -55,13 +56,16 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
             let dataAboutRegion = lastUpdatedData.filter(el => el.denominazione_regione == region)[0]
             console.log(dataAboutRegion);
-
+            
             modalContent.innerHTML = 
             `
+                
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <p class="fs-4">${dataAboutRegion.denominazione_regione}</p>
+                            <h5 class="fs-4 d-inline-flex">${dataAboutRegion.denominazione_regione}</h5>
+                            <span class="close" id="close">&times;</span>
+                        
                         </div>
                         <div class="col-12">
                             <p class="fs-3"><span class="fw-bold">Totale casi:</span> ${dataAboutRegion.totale_casi}</p>
@@ -74,12 +78,18 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     </div>
                 </div>
             `
+            //chiusura per mobile
+            let modalClose = document.querySelector('#close')
+            modalClose.addEventListener('click', ()=>{
+                modal.classList.remove('active')
+            })
         })
+        
     })
-
+    //chiusura click fuori
     window.addEventListener('click', function(e){
         if(e.target == modal){
             modal.classList.remove('active')
-        }
+        } 
     })
 })
