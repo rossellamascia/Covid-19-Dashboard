@@ -39,9 +39,11 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         div.classList.add('col-12','col-md-3','my-4')
         div.innerHTML =
         `
-            <div class="card-custom p-3 pb-0 h-100 rounded-3" data-region="${el.denominazione_regione}">
-                <p>${el.denominazione_regione}</p>
-                <p class="text-end fw-bold fs-4 mb-0">${el.nuovi_positivi}</p>
+            <div class="card-custom h-100 rounded-3 d-flex flex-column" data-region="${el.denominazione_regione}">
+                <p class="mb-0 ms-3 mt-3">${el.denominazione_regione}</p>
+                <p class="fw-bold fs-4 mb-0 ms-3">${el.nuovi_positivi}</p>
+                <hr class="text-main">
+                <p class="text-main ms-3">scopri di più</p>
             </div>
         `  
         cardWrapper.appendChild(div)
@@ -63,13 +65,10 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
             
             modalContent.innerHTML = 
             `
-                
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <h5 class="fs-4 d-inline-flex">${dataAboutRegion.denominazione_regione}</h5>
-                            <span class="close" id="close">&times;</span>
-                        
+                            <h5 class="fs-4 d-inline-flex">${dataAboutRegion.denominazione_regione}</h5> <span class="close" id="close">&times;</span>
                         </div>
                         <div class="col-12">
                             <p><span class="fw-bold">Totale casi:</span> ${dataAboutRegion.totale_casi}</p>
@@ -107,6 +106,13 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 colNew.style.height = `${80 * el[1]/maxNew}%`
                 trendNew.appendChild(colNew)
             })
+            //numero per ogni risultato
+            // let numberNew = document.querySelector('#numberNew')
+            // trendData.forEach(el=>{
+            //     let result = el[1]/maxNew
+            //     console.log(result);
+            // })
+            
             //trend decessi
             let maxDeath = Math.max(...trendData.map(el=>el[2]))
             let trendDeath = document.querySelector('#trendDeath')

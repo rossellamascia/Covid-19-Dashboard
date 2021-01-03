@@ -13,22 +13,24 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
     <link rel="stylesheet" href="style.css">
 
     <title>Covid 19 Dashboard</title>
 </head>
+
 <body>
     <header class="masthead">
         <div class="container h-100">
-          <div class="row h-100 align-items-center">
-            <div class="col-12">
-                <h1 class="text-white mb-0">Covid 19 - Dashboard</h1>
-                <p class="small text-white mb-2 ">Dati provenienti dalla protezione civile</p>
-                <p id="data" class="text-white fs-5"></p>
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <h1 class="text-white mb-0">Covid 19 - Dashboard</h1>
+                    <p class="small text-white mb-2 ">Dati provenienti dalla protezione civile</p>
+                    <p id="data" class="text-white fs-5"></p>
+                </div>
             </div>
-          </div>
         </div>
-      </header>
+    </header>
     <div class="container margin-top-70">
         <div class="row">
             <div class="col-12 col-md-3 mb-4">
@@ -69,15 +71,15 @@
     <div class="container mb-5">
         <div class="row px-3 pt-5">
             <div class="col-12">
-                <h3 class="text-white">Positivi oggi per regione</h3>
+                <h3 class="text-white bg-warning p-3 d-inline-block fw-normal rounded-top mb-0 fs-5">Nuovi positivi per Regione</h3>
             </div>
         </div>
         <div class="row ">
-            <div class="col-12 col-md-12 scroll-regioni bg-secondary rounded-3"> 
+            <div class="col-12 col-md-12 scroll-regioni bg-secondary rounded-3">
                 <div id="cardWrapper" class="row p-3 justify-content-center">
                 </div>
             </div>
-            
+
         </div>
     </div>
     <div class="modal-custom scroll-regioni">
@@ -91,11 +93,21 @@
 
 
     <footer class="container-fluid bg-secondary">
-            <div class="row">
-                <div class="col-12 text-center my-3">
-                    <p class="text-white mb-0">© <span id="year"></span> <span class="fw-bold">Rossella Mascia</span></p>
-                </div>
+        <div class="row justify-content-center py-5 text-center">
+            <div class="col-md-1">
+                <a href="https://www.linkedin.com/in/rossella-mascia-web-developer/" class="icon-button linkedin"><i
+                        class="ti-linkedin icon-linkedin"></i><span></span></a>
             </div>
+            <div class="col-md-1">
+                <a href="https://github.com/rossellamascia" class="icon-button github"><i
+                        class="ti-github icon-github"></i><span></span></a>
+            </div>
+        </div>
+        <div class="row bg-main">
+            <div class="col-12 text-center my-3">
+                <p class="text-white mb-0">© <span id="year"></span> <span class="fw-bold">Rossella Mascia</span></p>
+            </div>
+        </div>
     </footer>
     <script src="script.js"></script>
 </body>
