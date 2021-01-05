@@ -174,7 +174,7 @@ body {
 .close {
     float: right;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 35px;
     padding-top: 0px;
     margin-top: 0px;
 }
@@ -258,7 +258,6 @@ body {
     -o-transition: all 0.3s;
     transition: all 0.3s;
     width: 0;
-    z-index: 0;
 }
 
 .icon-button:hover span {
@@ -322,7 +321,7 @@ body {
     -o-transition: all 0.3s;
     transition: all 0.3s;
     width: 3.6rem;
-    z-index: 10;
+    
 }
 
 .icon-button .icon-twitter {
@@ -338,22 +337,20 @@ body {
 }
 
 .icon-button .icon-linkedin {
-    z-index: 0;
     color: #0e76a8;
 }
 
 .icon-button .icon-github {
-    z-index: 0;
     color: #24292e;
 }
 
 .icon-linkedin:hover {
-    z-index: 0;
+    z-index: 1;
     color: #fff;
 }
 
 .icon-github:hover {
-    z-index: 0;
+    z-index: 1;
     color: #fff;
 }
 
