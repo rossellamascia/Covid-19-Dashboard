@@ -15,7 +15,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         //ultima data caricata
         let lastUpdated = sorted[0].data
         console.log(sorted);
-        
+
         //formattazione data dell'ultimo aggiornamento
         let lastUpdatedFormatted = lastUpdated.split("T")[0].split("-").reverse().join("/")
         let lastUpdatedFormattedHour = lastUpdated.split("T")[1]
@@ -36,7 +36,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         document.getElementById("totalDeath").innerHTML = totalDeath
         //totale positivi
         let totalPositive = lastUpdatedData.map(el => el.nuovi_positivi).reduce((t, n) => t + n)
-      
+
         document.getElementById("totalPositive").innerHTML = totalPositive
 
         let days = Array.from(new Set(sorted.map(el => el.data))).reverse()
@@ -54,7 +54,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     <div class="container">
                         <div class="row">
                             <div class="col-12">
-                            <h5 class="fs-4 d-inline-flex">${set.replace(/_/g," ").toUpperCase()}</h5> <span class="close" id="close">&times;</span>
+                            <h5 class="fs-4 d-inline-flex">${set.replace(/_/g, " ").toUpperCase()}</h5> <span class="close" id="close">&times;</span>
                             </div>
                         </div>
                         <div class="row">
@@ -74,7 +74,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 //chiusura per mobile
                 let modalClose = document.querySelector('#close')
                 modalClose.addEventListener('click', () => {
-                modal.classList.remove('active')
+                    modal.classList.remove('active')
                 })
             })
         })
@@ -152,7 +152,6 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 modal.classList.add('active')
 
                 let dataAboutRegion = lastUpdatedData.filter(el => el.denominazione_regione == region)[0]
-                console.log(dataAboutRegion);
 
                 modalContent.innerHTML =
                     `
@@ -196,7 +195,8 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     <div class="row">
                         <div class="col-12">
                             <h6 class="mb-0 mt-5 fs-5 p-2 bg-accent d-inline-flex text-white rounded-top">Trend nuovi casi</h6>
-                            <div id="trendNew" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
+                            <div id="trendNew" class="d-flex align-items-end plot bg-main rounded-bottom">
+                            </div>
                         </div>
                         <div class="col-12">
                             <h6 class="mb-0 mt-5 fs-5 p-2 bg-danger d-inline-flex text-white rounded-top">Trend decessi</h6>
@@ -210,22 +210,25 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 </div>
             `
                 let trendData = sorted.map(el => el).reverse().filter(el => el.denominazione_regione == region).map(el => [el.data, el.nuovi_positivi, el.deceduti, el.dimessi_guariti])
+                console.log(trendData);
 
                 //trend nuovi casi
                 let maxNew = Math.max(...trendData.map(el => el[1]))
                 let trendNew = document.querySelector('#trendNew')
+                //let pinAfter = document.styleSheets[3].insertRule('.pin-new:after {background-color: rgb(255, 255, 255);}', 0)
+                let test = document.querySelector('#test')
+        
+
                 trendData.forEach(el => {
                     let colNew = document.createElement('div')
                     colNew.classList.add('d-inline-block', 'pin-new')
-                    colNew.style.height = `${80 * el[1] / maxNew}%`
+                    colNew.setAttribute('title', el[1])
+                    colNew.style.height = `${90 * el[1] / maxNew}%`
                     trendNew.appendChild(colNew)
                 })
-                //numero per ogni risultato
-                // let numberNew = document.querySelector('#numberNew')
-                // trendData.forEach(el=>{
-                //     let result = el[1]/maxNew
-                //     console.log(result);
-                // })
+                
+
+
 
                 //trend decessi
                 let maxDeath = Math.max(...trendData.map(el => el[2]))
@@ -233,7 +236,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 trendData.forEach(el => {
                     let colNew = document.createElement('div')
                     colNew.classList.add('d-inline-block', 'pin-new')
-                    colNew.style.height = `${80 * el[2] / maxDeath}%`
+                    colNew.style.height = `${90 * el[2] / maxDeath}%`
                     trendDeath.appendChild(colNew)
                 })
                 //trend ricoveri
@@ -242,7 +245,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 trendData.forEach(el => {
                     let colNew = document.createElement('div')
                     colNew.classList.add('d-inline-block', 'pin-new')
-                    colNew.style.height = `${80 * el[3] / maxRecovered}%`
+                    colNew.style.height = `${90 * el[3] / maxRecovered}%`
                     trendRecovered.appendChild(colNew)
                 })
 
@@ -260,4 +263,13 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 modal.classList.remove('active')
             }
         })
+
+
+        
+    })
+
+
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
     })

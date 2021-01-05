@@ -51,6 +51,7 @@ body {
     box-shadow: 2px 2px 6px #000000 !important;
     transition: 0.2s;
     background-color: #fff;
+    cursor: pointer;
 }
 
 .card-custom:hover {
@@ -176,28 +177,28 @@ body {
     cursor: pointer;
     font-size: 35px;
     padding-top: 0px;
-    margin-top: 0px;
+    margin-top: -18px;
 }
 
 /* grafico */
 
 .pin-new {
-    border-right: 2px solid rgb(255, 255, 255);
+    border-right: 2px solid rgba(180, 180, 180, 0.849);
     position: relative;
     width: 10px;
     margin-right: 10px;
 }
 
-/* .pin-new::after{
+.pin-new:after{
     position: absolute;
     content: "";
     top: 0px;
     right: -3px;
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background-color: rgb(255, 255, 255);
-} */
+}
 
 .pin-death {
     border-right: 2px solid rgba(225, 0, 0, 0.2);
