@@ -15,6 +15,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         //ultima data caricata
         let lastUpdated = sorted[0].data
         console.log(sorted);
+        
         //formattazione data dell'ultimo aggiornamento
         let lastUpdatedFormatted = lastUpdated.split("T")[0].split("-").reverse().join("/")
         let lastUpdatedFormattedHour = lastUpdated.split("T")[1]
@@ -35,6 +36,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         document.getElementById("totalDeath").innerHTML = totalDeath
         //totale positivi
         let totalPositive = lastUpdatedData.map(el => el.nuovi_positivi).reduce((t, n) => t + n)
+      
         document.getElementById("totalPositive").innerHTML = totalPositive
 
         let days = Array.from(new Set(sorted.map(el => el.data))).reverse()
@@ -156,16 +158,39 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     `
                 <div class="container">
                     <div class="row">
-                        <div class="col-12">
-                            <h5 class="fs-4 d-inline-flex">${dataAboutRegion.denominazione_regione}</h5> <span class="close" id="close">&times;</span>
+                        <div class="col-12 mb-5">
+                            <h3 class="fs-3 d-inline-flex">${dataAboutRegion.denominazione_regione}</h3> <span class="close" id="close">&times;</span>
                         </div>
-                        <div class="col-12">
-                            <p><span class="fw-bold">Totale casi:</span> ${dataAboutRegion.totale_casi}</p>
-                            <p>Nuovi positivi: ${dataAboutRegion.nuovi_positivi}</p>
-                            <p>Deceduti: ${dataAboutRegion.deceduti}</p>
-                            <p>Guariti: ${dataAboutRegion.dimessi_guariti}</p>
-                            <p>Ricoverati con sintomi: ${dataAboutRegion.ricoverati_con_sintomi}</p>
-                            <p>Isolamento domiciliare: ${dataAboutRegion.isolamento_domiciliare}</p>
+                        <div class="col-12 col-md-3 mb-4">
+                            <div class="card-custom rounded-3 d-flex flex-column h-100 bg-accent text-white"
+                                data-trend="totale_casi">
+                                <p class="ms-3 fs-4 mt-3 fw-light mb-0">Casi totali</p>
+                                <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.totale_casi}</p>
+                                
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3 mb-4">
+                            <div class="card-custom rounded-3 d-flex flex-column h-100 bg-success text-white"
+                                data-trend="dimessi_guariti">
+                                <p class="ms-3 fs-4 mt-3 fw-light mb-0">Guariti totali</p>
+                                <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.dimessi_guariti}</p>
+                                
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3 mb-4">
+                            <div class="card-custom rounded-3 d-flex flex-column h-100 bg-danger text-white" data-trend="deceduti">
+                                <p class="ms-3 fs-4 mt-3 fw-light mb-0">Morti totali</p>
+                                <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.deceduti}</p>
+                            
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3 mb-4">
+                            <div class="card-custom rounded-3 d-flex flex-column h-100 bg-warning text-white"
+                                data-trend="totale_positivi">
+                                <p class="ms-3 fs-4 mt-3 fw-light mb-0">Nuovi casi</p>
+                                <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.nuovi_positivi}</p>
+                                
+                            </div>
                         </div>
                     </div>
                     <div class="row">
