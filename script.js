@@ -53,7 +53,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 modalContentTrend.innerHTML =
                     `
                     <div class="modal-custom-header">
-                            <h3 class="fs-3">${set.replace(/_/g, " ").toUpperCase()}</h3> <span class="close" id="close">&times;</span>
+                            <h3 class="fs-3">${set.replace(/_/g, " ").toUpperCase()}</h3> <span class="close" id="closeTrend">&times;</span>
                     </div>
                     <div class="modal-custom-body">
                         <div class="row">
@@ -71,9 +71,10 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     totalTrend.appendChild(col)
                 })
                 //chiusura per mobile
-                let modalClose = document.querySelector('#close')
-                modalClose.addEventListener('click', () => {
+                let modalCloseTrend = document.querySelector('#closeTrend')
+                modalCloseTrend.addEventListener('click', () => {
                     modalTrend.classList.remove('active')
+                  
                 })
                 //chiusura click fuori
                 window.addEventListener('click', function (e) {
