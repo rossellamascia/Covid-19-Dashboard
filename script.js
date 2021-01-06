@@ -51,12 +51,10 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 modal.classList.add('active')
                 modalContent.innerHTML =
                     `
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">
-                            <h5 class="fs-4 d-inline-flex">${set.replace(/_/g, " ").toUpperCase()}</h5> <span class="close" id="close">&times;</span>
-                            </div>
-                        </div>
+                    <div class="modal-custom-header">
+                            <h3 class="fs-3">${set.replace(/_/g, " ").toUpperCase()}</h3> <span class="close" id="close">&times;</span>
+                    </div>
+                    <div class="modal-custom-body">
                         <div class="row">
                             <div class="col-12">
                                 <div id="totalTrend" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
@@ -155,60 +153,64 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
                 modalContent.innerHTML =
                     `
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12 mb-5">
-                            <h3 class="fs-3 d-inline-flex">${dataAboutRegion.denominazione_regione}</h3> <span class="close" id="close">&times;</span>
+                        <div class="modal-custom-header">
+                            <h3 class="fs-3">${dataAboutRegion.denominazione_regione}</h3> <span class="close" id="close">&times;</span>
                         </div>
-                        <div class="col-12 col-md-3 mb-4">
-                            <div class="card-custom rounded-3 d-flex flex-column h-100 bg-accent text-white"
-                                data-trend="totale_casi">
-                                <p class="ms-3 fs-4 mt-3 fw-light mb-0">Casi totali</p>
-                                <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.totale_casi}</p>
-                                
+                        <div class="modal-custom-body">
+                            <div class="row">
+                                <div class="col-12 col-md-3 mb-4">
+                                    <div class="card-custom rounded-3 d-flex flex-column h-100 bg-accent text-white" data-trend="totale_casi">
+                                        <p class="ms-3 fs-4 mt-3 fw-light mb-0">Casi totali</p>
+                                        <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.totale_casi}</p>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3 mb-4">
+                                    <div class="card-custom rounded-3 d-flex flex-column h-100 bg-success text-white"
+                                        data-trend="dimessi_guariti">
+                                        <p class="ms-3 fs-4 mt-3 fw-light mb-0">Guariti totali</p>
+                                        <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.dimessi_guariti}</p>
+                        
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3 mb-4">
+                                    <div class="card-custom rounded-3 d-flex flex-column h-100 bg-danger text-white" data-trend="deceduti">
+                                        <p class="ms-3 fs-4 mt-3 fw-light mb-0">Morti totali</p>
+                                        <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.deceduti}</p>
+                        
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3 mb-4">
+                                    <div class="card-custom rounded-3 d-flex flex-column h-100 bg-warning text-white"
+                                        data-trend="totale_positivi">
+                                        <p class="ms-3 fs-4 mt-3 fw-light mb-0">Nuovi casi</p>
+                                        <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.nuovi_positivi}</p>
+                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="mb-0 mt-5 fs-5 p-2 bg-accent d-inline-flex text-white rounded-top">Trend nuovi casi</h6>
+                                    <div id="trendNew" class="d-flex align-items-end plot bg-main rounded-bottom">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <h6 class="mb-0 mt-5 fs-5 p-2 bg-danger d-inline-flex text-white rounded-top">Trend decessi</h6>
+                                    <div id="trendDeath" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
+                                </div>
+                                <div class="col-12">
+                                    <h6 class="mb-0 mt-5 fs-5 p-2 bg-info d-inline-flex text-white rounded-top">Trend ricoverati</h6>
+                                    <div id="trendRecovered" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-3 mb-4">
-                            <div class="card-custom rounded-3 d-flex flex-column h-100 bg-success text-white"
-                                data-trend="dimessi_guariti">
-                                <p class="ms-3 fs-4 mt-3 fw-light mb-0">Guariti totali</p>
-                                <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.dimessi_guariti}</p>
-                                
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-3 mb-4">
-                            <div class="card-custom rounded-3 d-flex flex-column h-100 bg-danger text-white" data-trend="deceduti">
-                                <p class="ms-3 fs-4 mt-3 fw-light mb-0">Morti totali</p>
-                                <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.deceduti}</p>
-                            
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-3 mb-4">
-                            <div class="card-custom rounded-3 d-flex flex-column h-100 bg-warning text-white"
-                                data-trend="totale_positivi">
-                                <p class="ms-3 fs-4 mt-3 fw-light mb-0">Nuovi casi</p>
-                                <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.nuovi_positivi}</p>
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <h6 class="mb-0 mt-5 fs-5 p-2 bg-accent d-inline-flex text-white rounded-top">Trend nuovi casi</h6>
-                            <div id="trendNew" class="d-flex align-items-end plot bg-main rounded-bottom">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <h6 class="mb-0 mt-5 fs-5 p-2 bg-danger d-inline-flex text-white rounded-top">Trend decessi</h6>
-                            <div id="trendDeath" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
-                        </div>
-                        <div class="col-12">
-                            <h6 class="mb-0 mt-5 fs-5 p-2 bg-info d-inline-flex text-white rounded-top">Trend ricoverati</h6>
-                            <div id="trendRecovered" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
-                        </div>
-                    </div>
-                </div>
-            `
+                    `
+
+                //chiusura per mobile
+                let modalClose = document.querySelector('#close')
+                modalClose.addEventListener('click', () => {
+                    modal.classList.remove('active')
+                })
                 let trendData = sorted.map(el => el).reverse().filter(el => el.denominazione_regione == region).map(el => [el.data, el.nuovi_positivi, el.deceduti, el.dimessi_guariti])
                 console.log(trendData);
 
@@ -217,7 +219,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 let trendNew = document.querySelector('#trendNew')
                 //let pinAfter = document.styleSheets[3].insertRule('.pin-new:after {background-color: rgb(255, 255, 255);}', 0)
                 let test = document.querySelector('#test')
-        
+
 
                 trendData.forEach(el => {
                     let colNew = document.createElement('div')
@@ -226,7 +228,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     colNew.style.height = `${90 * el[1] / maxNew}%`
                     trendNew.appendChild(colNew)
                 })
-                
+
 
 
 
@@ -249,11 +251,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     trendRecovered.appendChild(colNew)
                 })
 
-                //chiusura per mobile
-                let modalClose = document.querySelector('#close')
-                modalClose.addEventListener('click', () => {
-                    modal.classList.remove('active')
-                })
+
             })
 
         })
@@ -265,11 +263,20 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         })
 
 
-        
+
     })
 
 
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+
+    // <div class="container">
+    //                 <div class="row">
+    //                    
+    //                     
+    //                     
+    //                 </div>
+    //                 
+    //             </div>

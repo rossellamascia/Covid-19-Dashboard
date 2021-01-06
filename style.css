@@ -96,42 +96,87 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
 /* modali */
+
 .modal-custom {
     position: fixed;
-    z-index: 0;
     left: 0px;
     top: 0px;
-    z-index: 1;
-    opacity: 1;
+    z-index: 9999;
     display: none;
     width: 100%;
     height: 100%;
-    padding-top: 10%;
     background-color: rgba(0, 0, 0, 0.5);
-    transition: 0.2s;
+    transition: 0.15s linear;
 }
 
 .modal-custom-content {
-    background-color: #fff;
+    /* background-color: #fff;
     margin: auto;
     width: 70%;
-    padding: 30px;
+    padding: 30px; */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: .3rem;
+    outline: 0;
+}
+
+.modal-custom-header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: calc(.3rem - 1px);
+    border-top-right-radius: calc(.3rem - 1px);
+}
+
+.modal-custom-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
 }
 
 .modal-custom.active {
-    z-index: 10;
     opacity: 1;
     display: block;
 }
-.modal-custom-center{
+
+.modal-custom-center {
     display: flex;
     align-items: center;
 }
-.modal-scroll-regioni {
-    height: 600px;
-    overflow-y: scroll;
-    outline-style: hidden;
+
+.modal-custom-dialog {
+    position: relative;
+    width: auto;
+    margin: 0.5rem;
+    pointer-events: none;
+}
+
+.modal-custom-dialog-scrollable {
+    height: calc(100% - 1rem);
+}
+
+.modal-custom-dialog-scrollable .modal-custom-content {
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.modal-custom-dialog-scrollable .modal-custom-body {
+    overflow-y: auto;
+}
+
+.modal-custom.active .modal-custom-dialog {
+    transform: none;
 }
 
 /* grafico */
@@ -189,7 +234,7 @@ body {
     margin-right: 10px;
 }
 
-.pin-new:after{
+.pin-new:after {
     position: absolute;
     content: "";
     top: 0px;
@@ -322,7 +367,6 @@ body {
     -o-transition: all 0.3s;
     transition: all 0.3s;
     width: 3.6rem;
-    
 }
 
 .icon-button .icon-twitter {
@@ -391,5 +435,15 @@ body {
     }
     .margin-top-70 {
         margin-top: -20px !important;
+    }
+}
+
+@media (min-width: 576px) {
+    .modal-custom-dialog {
+        max-width: 900px;
+        margin: 1.75rem auto;
+    }
+    .modal-custom-dialog-scrollable {
+        height: calc(100% - 3.5rem);
     }
 }
