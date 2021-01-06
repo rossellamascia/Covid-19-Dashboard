@@ -7,8 +7,10 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
     .then(dati => {
 
 
-        let modal = document.querySelector('.modal-custom')
-        let modalContent = document.querySelector('.modal-custom-content')
+        let modalRegion = document.querySelector('#region')
+        let modalTrend = document.querySelector('#trend')
+        let modalContentRegion = document.querySelector('#ModalContentRegion')
+        let modalContentTrend = document.querySelector('#ModalContentTrend')
 
         //ordino i dati
         let sorted = dati.reverse()
@@ -36,7 +38,6 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         document.getElementById("totalDeath").innerHTML = totalDeath
         //totale positivi
         let totalPositive = lastUpdatedData.map(el => el.nuovi_positivi).reduce((t, n) => t + n)
-
         document.getElementById("totalPositive").innerHTML = totalPositive
 
         let days = Array.from(new Set(sorted.map(el => el.data))).reverse()
@@ -48,8 +49,8 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 let totalsForDays = days.map(el => [el, sorted.filter(i => i.data == el).map(e => e[set]).reduce((t, n) => t + n)])
                 let maxData = Math.max(...totalsForDays.map(el => el[1]))
 
-                modal.classList.add('active')
-                modalContent.innerHTML =
+                modalTrend.classList.add('active')
+                modalContentTrend.innerHTML =
                     `
                     <div class="modal-custom-header">
                             <h3 class="fs-3">${set.replace(/_/g, " ").toUpperCase()}</h3> <span class="close" id="close">&times;</span>
@@ -72,53 +73,16 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 //chiusura per mobile
                 let modalClose = document.querySelector('#close')
                 modalClose.addEventListener('click', () => {
-                    modal.classList.remove('active')
+                    modalTrend.classList.remove('active')
+                })
+                //chiusura click fuori
+                window.addEventListener('click', function (e) {
+                    if (e.target == modalTrend) {
+                        modalTrend.classList.remove('active')
+                    }
                 })
             })
         })
-
-
-
-
-        // document.getElementById("timeTotal").addEventListener('click', () => {
-        //     let days = Array.from(new Set(sorted.map(el => el.data))).reverse()
-        //     let totalsForDays = days.map(el => [el, sorted.filter(i => i.data == el).map(e => e.nuovi_positivi).reduce((t, n) => t + n)])
-        //     let maxData = Math.max(...totalsForDays.map(el => el[1]))
-
-
-        //     modal.classList.add('active')
-        //     modalContent.innerHTML =
-        //         `
-        //         <div class="container">
-        //             <div class="row">
-        //                 <div class="col-12">
-        //                 <h5 class="fs-4 d-inline-flex">Trend casi totali</h5> <span class="close" id="close">&times;</span>
-        //                 </div>
-        //             </div>
-        //             <div class="row">
-        //                 <div class="col-12">
-        //                     <div id="totalTrend" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     `
-        //     let totalTrend = document.getElementById('totalTrend')
-        //     totalsForDays.forEach(el => {
-        //         let col = document.createElement('div')
-        //         col.classList.add('d-inline-block', 'pin-new')
-        //         col.style.height = `${70 * el[1] / maxData}%`
-        //         totalTrend.appendChild(col)
-        //     })
-        //     //chiusura per mobile
-        //     let modalClose = document.querySelector('#close')
-        //     modalClose.addEventListener('click', () => {
-        //         modal.classList.remove('active')
-        //     })
-        // })
-
-
-
-
 
 
         //card regioni positivi oggi
@@ -129,13 +93,13 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
             div.classList.add('col-12', 'col-md-3', 'my-4')
             div.innerHTML =
                 `
-            <div class="card-custom h-100 rounded-3 d-flex flex-column" data-region="${el.denominazione_regione}">
-                <p class="mb-0 ms-3 mt-3">${el.denominazione_regione}</p>
-                <p class="fw-bold fs-4 mb-0 ms-3">${el.nuovi_positivi}</p>
-                <hr class="text-main">
-                <p class="text-main ms-3">scopri di più</p>
-            </div>
-        `
+                    <div class="card-custom h-100 rounded-3 d-flex flex-column" data-region="${el.denominazione_regione}">
+                        <p class="mb-0 ms-3 mt-3">${el.denominazione_regione}</p>
+                        <p class="fw-bold fs-4 mb-0 ms-3">${el.nuovi_positivi}</p>
+                        <hr class="text-main">
+                        <p class="text-main ms-3">scopri di più</p>
+                    </div>
+                `
             cardWrapper.appendChild(div)
 
         });
@@ -147,11 +111,11 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         document.querySelectorAll('[data-region]').forEach(el => {
             el.addEventListener('click', () => {
                 let region = el.dataset.region
-                modal.classList.add('active')
+                modalRegion.classList.add('active')
 
                 let dataAboutRegion = lastUpdatedData.filter(el => el.denominazione_regione == region)[0]
 
-                modalContent.innerHTML =
+                modalContentRegion.innerHTML =
                     `
                         <div class="modal-custom-header">
                             <h3 class="fs-3">${dataAboutRegion.denominazione_regione}</h3> <span class="close" id="close">&times;</span>
@@ -209,18 +173,23 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 //chiusura per mobile
                 let modalClose = document.querySelector('#close')
                 modalClose.addEventListener('click', () => {
-                    modal.classList.remove('active')
+                    modalRegion.classList.remove('active')
                 })
-                let trendData = sorted.map(el => el).reverse().filter(el => el.denominazione_regione == region).map(el => [el.data, el.nuovi_positivi, el.deceduti, el.dimessi_guariti])
-                console.log(trendData);
+                //chiusura click fuori
+                window.addEventListener('click', function (e) {
+                    if (e.target == modalRegion) {
+                        modalRegion.classList.remove('active')
+                    }
+                })
 
+                //dati per ogni regione data dal più vecchio + positivi + deceduti + guariti
+                let trendData = sorted.map(el => el).reverse().filter(el => el.denominazione_regione == region).map(el => [el.data, el.nuovi_positivi, el.deceduti, el.dimessi_guariti])
+    
                 //trend nuovi casi
                 let maxNew = Math.max(...trendData.map(el => el[1]))
                 let trendNew = document.querySelector('#trendNew')
                 //let pinAfter = document.styleSheets[3].insertRule('.pin-new:after {background-color: rgb(255, 255, 255);}', 0)
-                let test = document.querySelector('#test')
-
-
+           
                 trendData.forEach(el => {
                     let colNew = document.createElement('div')
                     colNew.classList.add('d-inline-block', 'pin-new')
@@ -228,9 +197,6 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     colNew.style.height = `${90 * el[1] / maxNew}%`
                     trendNew.appendChild(colNew)
                 })
-
-
-
 
                 //trend decessi
                 let maxDeath = Math.max(...trendData.map(el => el[2]))
@@ -255,28 +221,8 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
             })
 
         })
-        //chiusura click fuori
-        window.addEventListener('click', function (e) {
-            if (e.target == modal) {
-                modal.classList.remove('active')
-            }
-        })
+       
 
 
 
     })
-
-
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-})
-
-    // <div class="container">
-    //                 <div class="row">
-    //                    
-    //                     
-    //                     
-    //                 </div>
-    //                 
-    //             </div>
