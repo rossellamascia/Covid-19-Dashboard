@@ -44,37 +44,77 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
         document.querySelectorAll('[data-trend]').forEach(el => {
             el.addEventListener('click', () => {
+                //formatto la data
+                let formatDays = days.map(el => el.toString().split("T")[0].split("-").reverse().join("/"))
+                //prendo l'attributo data-region
                 let set = el.dataset.trend
-
+           
+                //casi per ogni giorno e le data
                 let totalsForDays = days.map(el => [el, sorted.filter(i => i.data == el).map(e => e[set]).reduce((t, n) => t + n)])
-                let maxData = Math.max(...totalsForDays.map(el => el[1]))
+               
+                //let maxData = Math.max(...totalsForDays.map(el => el[1]))
 
                 modalTrend.classList.add('active')
                 modalContentTrend.innerHTML =
                     `
-                    <div class="modal-custom-header">
-                            <h3 class="fs-3">${set.replace(/_/g, " ").toUpperCase()}</h3> <span class="close" id="closeTrend">&times;</span>
-                    </div>
-                    <div class="modal-custom-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div id="totalTrend" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
+                        <div class="modal-custom-header">
+                                <h3 class="fs-3">${set.replace(/_/g, " ").toUpperCase()}</h3> <span class="close" id="closeTrend">&times;</span>
+                        </div>
+                        <div class="modal-custom-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <canvas id="totalTrend"></canvas>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `
-                let totalTrend = document.getElementById('totalTrend')
-                totalsForDays.forEach(el => {
-                    let col = document.createElement('div')
-                    col.classList.add('d-inline-block', 'pin-new')
-                    col.style.height = `${70 * el[1] / maxData}%`
-                    totalTrend.appendChild(col)
-                })
+                    `
+
+                let setColor = (set)=>{
+                    if(set == "totale_casi")
+                    { 
+                       return "#fe744f"
+                    } else if (set == "dimessi_guariti"){
+                        return "#198754"
+                    } else if (set == "deceduti"){
+                        return "#dc3445"
+                    } else if (set == "totale_positivi"){
+                        return "#ffc107"
+                    }
+                }
+                
+                var ctx = document.getElementById('totalTrend').getContext('2d');
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'line',
+
+                    // The data for our dataset
+                    data: {
+                        labels: formatDays,
+                        datasets: [{
+                            label: set.replace(/_/g, " ").toUpperCase(),
+                            backgroundColor: setColor(set),
+                            borderColor: setColor(set),
+                            data: totalsForDays.map(el => el[1])
+                        }]
+                    },
+
+                    // Configuration options go here
+                    options: {}
+                });
+
+
+                // let totalTrend = document.getElementById('myChart')
+                // totalsForDays.forEach(el => {
+                //     let col = document.createElement('div')
+                //     col.classList.add('d-inline-block', 'pin-new')
+                //     col.style.height = `${70 * el[1] / maxData}%`
+                //     totalTrend.appendChild(col)
+                // })
                 //chiusura per mobile
                 let modalCloseTrend = document.querySelector('#closeTrend')
                 modalCloseTrend.addEventListener('click', () => {
                     modalTrend.classList.remove('active')
-                  
+
                 })
                 //chiusura click fuori
                 window.addEventListener('click', function (e) {
@@ -185,12 +225,12 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
                 //dati per ogni regione data dal più vecchio + positivi + deceduti + guariti
                 let trendData = sorted.map(el => el).reverse().filter(el => el.denominazione_regione == region).map(el => [el.data, el.nuovi_positivi, el.deceduti, el.dimessi_guariti])
-    
+
                 //trend nuovi casi
                 let maxNew = Math.max(...trendData.map(el => el[1]))
                 let trendNew = document.querySelector('#trendNew')
                 //let pinAfter = document.styleSheets[3].insertRule('.pin-new:after {background-color: rgb(255, 255, 255);}', 0)
-           
+
                 trendData.forEach(el => {
                     let colNew = document.createElement('div')
                     colNew.classList.add('d-inline-block', 'pin-new')
@@ -222,7 +262,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
             })
 
         })
-       
+
 
 
 
