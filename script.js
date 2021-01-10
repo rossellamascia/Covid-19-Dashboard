@@ -12,6 +12,10 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         let modalContentRegion = document.querySelector('#ModalContentRegion')
         let modalContentTrend = document.querySelector('#ModalContentTrend')
 
+        //colori 
+
+        let ColorTotalCases = "#fe744f"
+
         //ordino i dati
         let sorted = dati.reverse()
         //ultima data caricata
@@ -72,7 +76,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 let setColor = (set)=>{
                     if(set == "totale_casi")
                     { 
-                       return "#fe744f"
+                       return ColorTotalCases
                     } else if (set == "dimessi_guariti"){
                         return "#198754"
                     } else if (set == "deceduti"){
@@ -99,17 +103,11 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     },
 
                     // Configuration options go here
-                    options: {}
+                    options: {
+                       
+                    }
                 });
-
-
-                // let totalTrend = document.getElementById('myChart')
-                // totalsForDays.forEach(el => {
-                //     let col = document.createElement('div')
-                //     col.classList.add('d-inline-block', 'pin-new')
-                //     col.style.height = `${70 * el[1] / maxData}%`
-                //     totalTrend.appendChild(col)
-                // })
+               
                 //chiusura per mobile
                 let modalCloseTrend = document.querySelector('#closeTrend')
                 modalCloseTrend.addEventListener('click', () => {
@@ -163,41 +161,13 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                         </div>
                         <div class="modal-custom-body">
                             <div class="row">
-                                <div class="col-12 col-md-3 mb-4">
-                                    <div class="card-custom rounded-3 d-flex flex-column h-100 bg-accent text-white" data-trend="totale_casi">
-                                        <p class="ms-3 fs-4 mt-3 fw-light mb-0">Casi totali</p>
-                                        <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.totale_casi}</p>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-3 mb-4">
-                                    <div class="card-custom rounded-3 d-flex flex-column h-100 bg-success text-white"
-                                        data-trend="dimessi_guariti">
-                                        <p class="ms-3 fs-4 mt-3 fw-light mb-0">Guariti totali</p>
-                                        <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.dimessi_guariti}</p>
-                        
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-3 mb-4">
-                                    <div class="card-custom rounded-3 d-flex flex-column h-100 bg-danger text-white" data-trend="deceduti">
-                                        <p class="ms-3 fs-4 mt-3 fw-light mb-0">Morti totali</p>
-                                        <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.deceduti}</p>
-                        
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-3 mb-4">
-                                    <div class="card-custom rounded-3 d-flex flex-column h-100 bg-warning text-white"
-                                        data-trend="totale_positivi">
-                                        <p class="ms-3 fs-4 mt-3 fw-light mb-0">Nuovi casi</p>
-                                        <p class="fs-3 ms-3 pe-3 text-white fw-bolder">${dataAboutRegion.nuovi_positivi}</p>
-                        
-                                    </div>
+                                <div class="col-12">
+                                    <canvas id="pinRegion"></canvas>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <h6 class="mb-0 mt-5 fs-5 p-2 bg-accent d-inline-flex text-white rounded-top">Trend nuovi casi</h6>
-                                    <div id="trendNew" class="d-flex align-items-end plot bg-main rounded-bottom">
-                                    </div>
+                                    <canvas id="trendNew"></canvas>
                                 </div>
                                 <div class="col-12">
                                     <h6 class="mb-0 mt-5 fs-5 p-2 bg-danger d-inline-flex text-white rounded-top">Trend decessi</h6>
@@ -210,7 +180,43 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                             </div>
                         </div>
                     `
-
+                    var ctx = document.getElementById('pinRegion');
+                    var test = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Totale casi', 'Dimessi guariti', 'Deceduti', 'Nuovi positivi'],
+                            datasets: [{
+                                label: '# of Votes',
+                                data: [dataAboutRegion.totale_casi,dataAboutRegion.dimessi_guariti,dataAboutRegion.deceduti,dataAboutRegion.nuovi_positivi],
+                                backgroundColor: [
+                                    ColorTotalCases,
+                                    '#198754',
+                                    '#dc3445',
+                                    '#ffc107',
+                                ],
+                                borderColor: [
+                                    ColorTotalCases,
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                    
+                    
                 //chiusura per mobile
                 let modalClose = document.querySelector('#close')
                 modalClose.addEventListener('click', () => {
@@ -223,13 +229,41 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     }
                 })
 
+
+               
+
                 //dati per ogni regione data dal più vecchio + positivi + deceduti + guariti
                 let trendData = sorted.map(el => el).reverse().filter(el => el.denominazione_regione == region).map(el => [el.data, el.nuovi_positivi, el.deceduti, el.dimessi_guariti])
+                console.log(trendData[0]);
+
+
+                var ctx = document.getElementById('trendNew').getContext('2d');
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'line',
+
+                    // The data for our dataset
+                    data: {
+                        labels: trendData.map(el => el[0].split("T")[0].split("-").reverse().join("/")),
+                        datasets: [{
+                            label: ["totale casi"],
+                            backgroundColor: ColorTotalCases,
+                            borderColor: "red",
+                            data: trendData.map(el => el[1])
+                        }]
+                    },
+
+                    // Configuration options go here
+                    options: {
+                       
+                    }
+                });
+
 
                 //trend nuovi casi
                 let maxNew = Math.max(...trendData.map(el => el[1]))
                 let trendNew = document.querySelector('#trendNew')
-                //let pinAfter = document.styleSheets[3].insertRule('.pin-new:after {background-color: rgb(255, 255, 255);}', 0)
+                
 
                 trendData.forEach(el => {
                     let colNew = document.createElement('div')
@@ -267,3 +301,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
 
     })
+
+
+
+    
