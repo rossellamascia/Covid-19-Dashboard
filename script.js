@@ -13,8 +13,10 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         let modalContentTrend = document.querySelector('#ModalContentTrend')
 
         //colori 
-
         let ColorTotalCases = "#fe744f"
+        let ColorDeath = '#dc3445'
+        let ColorDischergedHealed = '#198754'
+        let ColorTotalPositive = "#ffc107"
 
         //ordino i dati
         let sorted = dati.reverse()
@@ -46,8 +48,10 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
         let days = Array.from(new Set(sorted.map(el => el.data))).reverse()
 
+
         document.querySelectorAll('[data-trend]').forEach(el => {
             el.addEventListener('click', () => {
+                
                 //formatto la data
                 let formatDays = days.map(el => el.toString().split("T")[0].split("-").reverse().join("/"))
                 //prendo l'attributo data-region
@@ -78,11 +82,11 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     { 
                        return ColorTotalCases
                     } else if (set == "dimessi_guariti"){
-                        return "#198754"
+                        return ColorDischergedHealed
                     } else if (set == "deceduti"){
-                        return "#dc3445"
+                        return ColorDeath
                     } else if (set == "totale_positivi"){
-                        return "#ffc107"
+                        return ColorTotalPositive
                     }
                 }
                 
@@ -165,17 +169,15 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                                     <canvas id="pinRegion"></canvas>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row mt-5">
                                 <div class="col-12">
                                     <canvas id="trendNew"></canvas>
                                 </div>
                                 <div class="col-12">
-                                    <h6 class="mb-0 mt-5 fs-5 p-2 bg-danger d-inline-flex text-white rounded-top">Trend decessi</h6>
-                                    <div id="trendDeath" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
+                                    <canvas id="trendDeath"></canvas>
                                 </div>
                                 <div class="col-12">
-                                    <h6 class="mb-0 mt-5 fs-5 p-2 bg-info d-inline-flex text-white rounded-top">Trend ricoverati</h6>
-                                    <div id="trendRecovered" class="d-flex align-items-end plot bg-main rounded-bottom"></div>
+                                    <canvas id="trendRecovered"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -190,19 +192,17 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                                 data: [dataAboutRegion.totale_casi,dataAboutRegion.dimessi_guariti,dataAboutRegion.deceduti,dataAboutRegion.nuovi_positivi],
                                 backgroundColor: [
                                     ColorTotalCases,
-                                    '#198754',
-                                    '#dc3445',
-                                    '#ffc107',
+                                    ColorDischergedHealed,
+                                    ColorDeath,
+                                    ColorTotalPositive,
                                 ],
                                 borderColor: [
                                     ColorTotalCases,
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
+                                    ColorDischergedHealed,
+                                    ColorDeath,
+                                    ColorTotalPositive,
                                 ],
-                                borderWidth: 1
+                                borderWidth: 0
                             }]
                         },
                         options: {
@@ -229,9 +229,6 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     }
                 })
 
-
-               
-
                 //dati per ogni regione data dal più vecchio + positivi + deceduti + guariti
                 let trendData = sorted.map(el => el).reverse().filter(el => el.denominazione_regione == region).map(el => [el.data, el.nuovi_positivi, el.deceduti, el.dimessi_guariti])
                 console.log(trendData[0]);
@@ -246,9 +243,9 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     data: {
                         labels: trendData.map(el => el[0].split("T")[0].split("-").reverse().join("/")),
                         datasets: [{
-                            label: ["totale casi"],
+                            label: ["Trend totale casi"],
                             backgroundColor: ColorTotalCases,
-                            borderColor: "red",
+                            borderColor: ColorTotalCases,
                             data: trendData.map(el => el[1])
                         }]
                     },
@@ -259,46 +256,53 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     }
                 });
 
+                var ctx = document.getElementById('trendDeath').getContext('2d');
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'line',
 
-                //trend nuovi casi
-                let maxNew = Math.max(...trendData.map(el => el[1]))
-                let trendNew = document.querySelector('#trendNew')
-                
+                    // The data for our dataset
+                    data: {
+                        labels: trendData.map(el => el[0].split("T")[0].split("-").reverse().join("/")),
+                        datasets: [{
+                            label: ["Trend decessi"],
+                            backgroundColor: ColorDeath,
+                            borderColor: ColorDeath,
+                            data: trendData.map(el => el[2])
+                        }]
+                    },
 
-                trendData.forEach(el => {
-                    let colNew = document.createElement('div')
-                    colNew.classList.add('d-inline-block', 'pin-new')
-                    colNew.setAttribute('title', el[1])
-                    colNew.style.height = `${90 * el[1] / maxNew}%`
-                    trendNew.appendChild(colNew)
-                })
+                    // Configuration options go here
+                    options: {
+                       
+                    }
+                });
 
-                //trend decessi
-                let maxDeath = Math.max(...trendData.map(el => el[2]))
-                let trendDeath = document.querySelector('#trendDeath')
-                trendData.forEach(el => {
-                    let colNew = document.createElement('div')
-                    colNew.classList.add('d-inline-block', 'pin-new')
-                    colNew.style.height = `${90 * el[2] / maxDeath}%`
-                    trendDeath.appendChild(colNew)
-                })
-                //trend ricoveri
-                let maxRecovered = Math.max(...trendData.map(el => el[3]))
-                let trendRecovered = document.querySelector('#trendRecovered')
-                trendData.forEach(el => {
-                    let colNew = document.createElement('div')
-                    colNew.classList.add('d-inline-block', 'pin-new')
-                    colNew.style.height = `${90 * el[3] / maxRecovered}%`
-                    trendRecovered.appendChild(colNew)
-                })
+                var ctx = document.getElementById('trendRecovered').getContext('2d');
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'line',
 
+                    // The data for our dataset
+                    data: {
+                        labels: trendData.map(el => el[0].split("T")[0].split("-").reverse().join("/")),
+                        datasets: [{
+                            label: ["Trend ricoverati"],
+                            backgroundColor: "#0d6efd",
+                            borderColor: "#558bdb",
+                            data: trendData.map(el => el[3])
+                        }]
+                    },
+
+                    // Configuration options go here
+                    options: {
+                       
+                    }
+                });
 
             })
 
         })
-
-
-
 
     })
 

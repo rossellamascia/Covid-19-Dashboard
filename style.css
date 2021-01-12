@@ -1,11 +1,14 @@
 * {
     font-family: 'Jost', sans-serif;
 }
-
+.red{
+    background-color: #000000;
+}
 :root {
     --main-color: #1e1e2c;
     --secondary-color: #272a3c;
     --accent-color: #fe744f;
+    --blue-color: #558bdb;
 }
 
 .bg-main {
@@ -31,7 +34,6 @@
 body {
     background-color: var(--main-color);
 }
-
 .masthead {
     height: 40vh;
     min-height: 50px;
@@ -98,7 +100,13 @@ body {
 }
 
 /* modali */
-
+.close {
+    float: right;
+    cursor: pointer;
+    font-size: 35px;
+    padding-top: 0px;
+    margin-top: -18px;
+}
 .modal-custom {
     position: fixed;
     left: 0px;
@@ -178,116 +186,6 @@ body {
 
 .modal-custom.active .modal-custom-dialog {
     transform: none;
-}
-
-/* grafico */
-
-.chart-area {
-    position: relative;
-    height: 10rem;
-    width: 100%;
-}
-
-@media (min-width: 768px) {
-    .chart-area {
-        height: 20rem;
-    }
-}
-
-.chart-bar {
-    position: relative;
-    height: 10rem;
-    width: 100%;
-}
-
-@media (min-width: 768px) {
-    .chart-bar {
-        height: 20rem;
-    }
-}
-
-.chart-pie {
-    position: relative;
-    height: 15rem;
-    width: 100%;
-}
-
-@media (min-width: 768px) {
-    .chart-pie {
-        height: calc(20rem - 43px) !important;
-    }
-}
-
-.close {
-    float: right;
-    cursor: pointer;
-    font-size: 35px;
-    padding-top: 0px;
-    margin-top: -18px;
-}
-
-/* grafico */
-
-.pin-new {
-    border-right: 2px solid rgba(180, 180, 180, 0.849);
-    position: relative;
-    width: 10px;
-    margin-right: 10px;
-}
-
-.pin-new:after {
-    position: absolute;
-    content: "";
-    top: 0px;
-    right: -3px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: rgb(255, 255, 255);
-}
-
-.pin-death {
-    border-right: 2px solid rgba(225, 0, 0, 0.2);
-    position: relative;
-    width: 5px;
-    margin-right: 1px;
-}
-
-.pin-death::after {
-    position: absolute;
-    content: "";
-    top: 0px;
-    right: -3px;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: red;
-}
-
-.pin-recovered {
-    border-right: 2px solid rgba(0, 225, 0, 0.2);
-    position: relative;
-    width: 5px;
-    margin-right: 1px;
-}
-
-.pin-recovered::after {
-    position: absolute;
-    content: "";
-    top: 0px;
-    right: -3px;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: green;
-}
-
-.plot {
-    height: 200px;
-    width: 100%;
-    overflow-y: hidden;
-    overflow-x: scroll;
-    padding-bottom: 3px;
 }
 
 /* social */
