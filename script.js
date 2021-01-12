@@ -16,10 +16,11 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         let ColorTotalCases = "#fe744f"
         let ColorDeath = '#dc3445'
         let ColorDischergedHealed = '#198754'
-        let ColorTotalPositive = "#ffc107"
+        let ColorNewPositive = "#ffc107"
 
         //ordino i dati
         let sorted = dati.reverse()
+        console.log(sorted);
         //ultima data caricata
         let lastUpdated = sorted[0].data
         console.log(sorted);
@@ -46,9 +47,9 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         let totalPositive = lastUpdatedData.map(el => el.nuovi_positivi).reduce((t, n) => t + n)
         document.getElementById("totalPositive").innerHTML = totalPositive
 
+        //perendo i giorni senza doppioni
         let days = Array.from(new Set(sorted.map(el => el.data))).reverse()
-
-
+        
         document.querySelectorAll('[data-trend]').forEach(el => {
             el.addEventListener('click', () => {
                 
@@ -59,7 +60,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
            
                 //casi per ogni giorno e le data
                 let totalsForDays = days.map(el => [el, sorted.filter(i => i.data == el).map(e => e[set]).reduce((t, n) => t + n)])
-               
+          
                 //let maxData = Math.max(...totalsForDays.map(el => el[1]))
 
                 modalTrend.classList.add('active')
@@ -85,8 +86,8 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                         return ColorDischergedHealed
                     } else if (set == "deceduti"){
                         return ColorDeath
-                    } else if (set == "totale_positivi"){
-                        return ColorTotalPositive
+                    } else if (set == "nuovi_positivi"){
+                        return ColorNewPositive
                     }
                 }
                 
@@ -128,7 +129,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         })
 
 
-        //card regioni positivi oggi
+        //card regioni con positivi oggi
         let cardWrapper = document.getElementById("cardWrapper")
 
         lastUpdatedData.forEach(el => {
@@ -146,9 +147,6 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
             cardWrapper.appendChild(div)
 
         });
-
-
-
 
         //apertura modale
         document.querySelectorAll('[data-region]').forEach(el => {
@@ -194,13 +192,13 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                                     ColorTotalCases,
                                     ColorDischergedHealed,
                                     ColorDeath,
-                                    ColorTotalPositive,
+                                    ColorNewPositive,
                                 ],
                                 borderColor: [
                                     ColorTotalCases,
                                     ColorDischergedHealed,
                                     ColorDeath,
-                                    ColorTotalPositive,
+                                    ColorNewPositive,
                                 ],
                                 borderWidth: 0
                             }]
