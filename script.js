@@ -137,7 +137,6 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
         //card regioni con positivi oggi
         let cardWrapper = document.getElementById("cardWrapper")
-
         lastUpdatedData.forEach(el => {
             let div = document.createElement('div')
             div.classList.add('col-12', 'col-md-3', 'my-4')
@@ -145,7 +144,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                 `
                     <div class="card-custom h-100 rounded-3 d-flex flex-column" data-region="${el.denominazione_regione}">
                         <p class="mb-0 ms-3 mt-3">${el.denominazione_regione}</p>
-                        <p class="fw-bold fs-4 mb-0 ms-3">${el.nuovi_positivi}</p>
+                        <p class="fw-bold fs-4 mb-0 ms-3">${new Intl.NumberFormat("it-IT").format(el.nuovi_positivi)}</p>
                         <hr class="text-main">
                         <p class="text-main ms-3">scopri di più</p>
                     </div>
