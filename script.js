@@ -35,17 +35,23 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
         //totale casi
         let totalCases = lastUpdatedData.map(el => el.totale_casi).reduce((t, n) => t + n)
-        document.getElementById("totalCases").innerHTML = totalCases
+        let formatNumberCases = new Intl.NumberFormat('it-IT').format(totalCases)
+        document.getElementById("totalCases").innerHTML = formatNumberCases
 
         //totale guariti
         let totalRecovered = lastUpdatedData.map(el => el.dimessi_guariti).reduce((t, n) => t + n)
-        document.getElementById("totalRecovered").innerHTML = totalRecovered
-        //morti totali
+        let formatNumberRecovered = new Intl.NumberFormat('it-IT').format(totalRecovered)
+        document.getElementById("totalRecovered").innerHTML = formatNumberRecovered
+
+        //morti totali con formattazione numeri
         let totalDeath = lastUpdatedData.map(el => el.deceduti).reduce((t, n) => t + n)
-        document.getElementById("totalDeath").innerHTML = totalDeath
+        let formatNumberDeath = new Intl.NumberFormat('it-IT').format(totalDeath)
+        document.getElementById("totalDeath").innerHTML = formatNumberDeath
+        
         //totale positivi
         let totalPositive = lastUpdatedData.map(el => el.nuovi_positivi).reduce((t, n) => t + n)
-        document.getElementById("totalPositive").innerHTML = totalPositive
+        let formatNumberPositive = new Intl.NumberFormat('it-IT').format(totalPositive)
+        document.getElementById("totalPositive").innerHTML = formatNumberPositive
 
         //perendo i giorni senza doppioni
         let days = Array.from(new Set(sorted.map(el => el.data))).reverse()
