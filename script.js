@@ -176,12 +176,6 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                                 <div class="col-12">
                                     <canvas id="trendNew"></canvas>
                                 </div>
-                                <div class="col-12">
-                                    <canvas id="trendDeath"></canvas>
-                                </div>
-                                <div class="col-12">
-                                    <canvas id="trendRecovered"></canvas>
-                                </div>
                             </div>
                         </div>
                     `
@@ -250,51 +244,20 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                             backgroundColor: ColorTotalCases,
                             borderColor: ColorTotalCases,
                             data: trendData.map(el => el[1])
-                        }]
-                    },
-
-                    // Configuration options go here
-                    options: {
-                       
-                    }
-                });
-
-                var ctx = document.getElementById('trendDeath').getContext('2d');
-                var chart = new Chart(ctx, {
-                    // The type of chart we want to create
-                    type: 'line',
-
-                    // The data for our dataset
-                    data: {
-                        labels: trendData.map(el => el[0].split("T")[0].split("-").reverse().join("/")),
-                        datasets: [{
+                        },
+                        {
                             label: ["Trend decessi"],
                             backgroundColor: ColorDeath,
                             borderColor: ColorDeath,
                             data: trendData.map(el => el[2])
-                        }]
-                    },
-
-                    // Configuration options go here
-                    options: {
-                       
-                    }
-                });
-
-                var ctx = document.getElementById('trendRecovered').getContext('2d');
-                var chart = new Chart(ctx, {
-                    // The type of chart we want to create
-                    type: 'line',
-
-                    // The data for our dataset
-                    data: {
-                        labels: trendData.map(el => el[0].split("T")[0].split("-").reverse().join("/")),
-                        datasets: [{
+                        },
+                        {
                             label: ["Trend ricoverati"],
                             backgroundColor: "#0d6efd",
                             borderColor: "#558bdb",
                             data: trendData.map(el => el[3])
-                        }]
+                        }
+                    ]
                     },
 
                     // Configuration options go here
