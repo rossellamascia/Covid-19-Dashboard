@@ -47,7 +47,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         let totalDeath = lastUpdatedData.map(el => el.deceduti).reduce((t, n) => t + n)
         let formatNumberDeath = new Intl.NumberFormat('it-IT').format(totalDeath)
         document.getElementById("totalDeath").innerHTML = formatNumberDeath
-        
+
         //totale positivi
         let totalPositive = lastUpdatedData.map(el => el.nuovi_positivi).reduce((t, n) => t + n)
         let formatNumberPositive = new Intl.NumberFormat('it-IT').format(totalPositive)
@@ -55,18 +55,19 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
         //perendo i giorni senza doppioni
         let days = Array.from(new Set(sorted.map(el => el.data))).reverse()
-        
+
         document.querySelectorAll('[data-trend]').forEach(el => {
             el.addEventListener('click', () => {
-                
+
                 //formatto la data
-                let formatDays = days.map(el => el.toString().split("T")[0].split("-").reverse().join("/"))
+                let formatDays = days.flatMap(el => el.split("T")[0].split("-").reverse().join("/"))
+                console.log(formatDays);
                 //prendo l'attributo data-region
                 let set = el.dataset.trend
-           
+
                 //casi per ogni giorno e le data
                 let totalsForDays = days.map(el => [el, sorted.filter(i => i.data == el).map(e => e[set]).reduce((t, n) => t + n)])
-          
+
                 //let maxData = Math.max(...totalsForDays.map(el => el[1]))
 
                 modalTrend.classList.add('active')
@@ -84,19 +85,19 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                         </div>
                     `
 
-                let setColor = (set)=>{
-                    if(set == "totale_casi")
-                    { 
-                       return ColorTotalCases
-                    } else if (set == "dimessi_guariti"){
+                let setColor = (set) => {
+                    if (set == "totale_casi") {
+                        return ColorTotalCases
+                    } else if (set == "dimessi_guariti") {
                         return ColorDischergedHealed
-                    } else if (set == "deceduti"){
+                    } else if (set == "deceduti") {
                         return ColorDeath
-                    } else if (set == "nuovi_positivi"){
+                    } else if (set == "nuovi_positivi") {
                         return ColorNewPositive
                     }
                 }
-                
+
+
                 var ctx = document.getElementById('totalTrend').getContext('2d');
                 var chart = new Chart(ctx, {
                     // The type of chart we want to create
@@ -115,10 +116,10 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
                     // Configuration options go here
                     options: {
-                       
+
                     }
                 });
-               
+
                 //chiusura per mobile
                 let modalCloseTrend = document.querySelector('#closeTrend')
                 modalCloseTrend.addEventListener('click', () => {
@@ -138,6 +139,9 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         //card regioni con positivi oggi
         let cardWrapper = document.getElementById("cardWrapper")
         lastUpdatedData.forEach(el => {
+
+            let stringVariazione = String(el.variazione_totale_positivi).startsWith("-") ? String(el.variazione_totale_positivi) : `+${String(el.variazione_totale_positivi)}`
+
             let div = document.createElement('div')
             div.classList.add('col-12', 'col-md-3', 'my-4')
             div.innerHTML =
@@ -145,6 +149,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     <div class="card-custom h-100 rounded-3 d-flex flex-column" data-region="${el.denominazione_regione}">
                         <p class="mb-0 ms-3 mt-3">${el.denominazione_regione}</p>
                         <p class="fw-bold fs-4 mb-0 ms-3">${new Intl.NumberFormat("it-IT").format(el.nuovi_positivi)}</p>
+                        <p class="small my-0 ms-3"> ${new Intl.NumberFormat("it-IT").format(stringVariazione)}</p>
                         <hr class="text-main">
                         <p class="text-main ms-3">scopri di più</p>
                     </div>
@@ -179,41 +184,41 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                             </div>
                         </div>
                     `
-                    var ctx = document.getElementById('pinRegion');
-                    var test = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['Totale casi', 'Dimessi guariti', 'Deceduti', 'Nuovi positivi'],
-                            datasets: [{
-                                label: '# of Votes',
-                                data: [dataAboutRegion.totale_casi,dataAboutRegion.dimessi_guariti,dataAboutRegion.deceduti,dataAboutRegion.nuovi_positivi],
-                                backgroundColor: [
-                                    ColorTotalCases,
-                                    ColorDischergedHealed,
-                                    ColorDeath,
-                                    ColorNewPositive,
-                                ],
-                                borderColor: [
-                                    ColorTotalCases,
-                                    ColorDischergedHealed,
-                                    ColorDeath,
-                                    ColorNewPositive,
-                                ],
-                                borderWidth: 0
+                var ctx = document.getElementById('pinRegion');
+                var test = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Totale casi', 'Dimessi guariti', 'Deceduti', 'Nuovi positivi'],
+                        datasets: [{
+                            label: '# of Votes',
+                            data: [dataAboutRegion.totale_casi, dataAboutRegion.dimessi_guariti, dataAboutRegion.deceduti, dataAboutRegion.nuovi_positivi],
+                            backgroundColor: [
+                                ColorTotalCases,
+                                ColorDischergedHealed,
+                                ColorDeath,
+                                ColorNewPositive,
+                            ],
+                            borderColor: [
+                                ColorTotalCases,
+                                ColorDischergedHealed,
+                                ColorDeath,
+                                ColorNewPositive,
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
                             }]
-                        },
-                        options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
-                                    }
-                                }]
-                            }
                         }
-                    });
-                    
-                    
+                    }
+                });
+
+
                 //chiusura per mobile
                 let modalClose = document.querySelector('#close')
                 modalClose.addEventListener('click', () => {
@@ -257,12 +262,12 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                             borderColor: "#558bdb",
                             data: trendData.map(el => el[3])
                         }
-                    ]
+                        ]
                     },
 
                     // Configuration options go here
                     options: {
-                       
+
                     }
                 });
 
@@ -274,4 +279,3 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
 
 
-    
