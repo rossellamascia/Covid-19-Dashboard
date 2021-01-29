@@ -23,11 +23,10 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         console.log(sorted);
         //ultima data caricata
         let lastUpdated = sorted[0].data
-        console.log(sorted);
 
         //formattazione data dell'ultimo aggiornamento
         let lastUpdatedFormatted = lastUpdated.split("T")[0].split("-").reverse().join("/")
-        let lastUpdatedFormattedHour = lastUpdated.split("T")[1]
+        /*let lastUpdatedFormattedHour = lastUpdated.split("T")[1]*/
         document.getElementById("data").innerHTML = `Dati aggiornati al: ${lastUpdatedFormatted}`
 
         //regione con più casi
@@ -35,6 +34,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
         //totale casi
         let totalCases = lastUpdatedData.map(el => el.totale_casi).reduce((t, n) => t + n)
+
         let formatNumberCases = new Intl.NumberFormat('it-IT').format(totalCases)
         document.getElementById("totalCases").innerHTML = formatNumberCases
 
@@ -61,14 +61,12 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
                 //formatto la data
                 let formatDays = days.flatMap(el => el.split("T")[0].split("-").reverse().join("/"))
-                console.log(formatDays);
+
                 //prendo l'attributo data-region
                 let set = el.dataset.trend
 
                 //casi per ogni giorno e le data
                 let totalsForDays = days.map(el => [el, sorted.filter(i => i.data == el).map(e => e[set]).reduce((t, n) => t + n)])
-
-                //let maxData = Math.max(...totalsForDays.map(el => el[1]))
 
                 modalTrend.classList.add('active')
                 modalContentTrend.innerHTML =
@@ -140,7 +138,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         let cardWrapper = document.getElementById("cardWrapper")
         lastUpdatedData.forEach(el => {
 
-            let stringVariazione = String(el.variazione_totale_positivi).startsWith("-") ? String(el.variazione_totale_positivi) : `+${String(el.variazione_totale_positivi)}`
+            let stringVariazione = String(el.variazione_totale_positivi).startsWith("-") ? el.variazione_totale_positivi : `+${el.variazione_totale_positivi}`
 
             let div = document.createElement('div')
             div.classList.add('col-12', 'col-md-3', 'my-4')
@@ -149,7 +147,7 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                     <div class="card-custom h-100 rounded-3 d-flex flex-column" data-region="${el.denominazione_regione}">
                         <p class="mb-0 ms-3 mt-3">${el.denominazione_regione}</p>
                         <p class="fw-bold fs-4 mb-0 ms-3">${new Intl.NumberFormat("it-IT").format(el.nuovi_positivi)}</p>
-                        <p class="small my-0 ms-3"> ${new Intl.NumberFormat("it-IT").format(stringVariazione)}</p>
+                        <p class="small my-0 ms-3"> ${stringVariazione}</p>
                         <hr class="text-main">
                         <p class="text-main ms-3">scopri di più</p>
                     </div>
@@ -276,6 +274,3 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         })
 
     })
-
-
-
