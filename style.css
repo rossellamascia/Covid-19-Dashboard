@@ -351,3 +351,6 @@ body {
         height: calc(100% - 3.5rem);
     }
 }
+.test{
+    color: #0d6efd;
+}

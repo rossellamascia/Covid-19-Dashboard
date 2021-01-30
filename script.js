@@ -17,6 +17,14 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
         let ColorDeath = '#dc3445'
         let ColorDischergedHealed = '#198754'
         let ColorNewPositive = "#ffc107"
+        let ColorHospitalized = '#0d6dfd6c'
+        //border
+        let ColorTotalCasesBorder = "#ff6d4450"
+        let ColorDeathBorder = '#dc3445'
+        let ColorDischergedHealedBorder = '#198754'
+        let ColorNewPositiveBorder = "#ffc107"
+        let ColorHospitalizedBorder = '#0d6efd'
+
 
         //ordino i dati
         let sorted = dati.reverse()
@@ -197,10 +205,10 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                                 ColorNewPositive,
                             ],
                             borderColor: [
-                                ColorTotalCases,
-                                ColorDischergedHealed,
-                                ColorDeath,
-                                ColorNewPositive,
+                                ColorTotalCasesBorder,
+                                ColorDischergedHealedBorder,
+                                ColorDeathBorder,
+                                ColorNewPositiveBorder,
                             ],
                             borderWidth: 0
                         }]
@@ -245,19 +253,19 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
                         datasets: [{
                             label: ["Trend totale casi"],
                             backgroundColor: ColorTotalCases,
-                            borderColor: ColorTotalCases,
+                            borderColor: ColorTotalCasesBorder,
                             data: trendData.map(el => el[1])
                         },
                         {
                             label: ["Trend decessi"],
-                            backgroundColor: ColorDeath,
+                            backgroundColor: ColorDeathBorder,
                             borderColor: ColorDeath,
                             data: trendData.map(el => el[2])
                         },
                         {
                             label: ["Trend ricoverati"],
-                            backgroundColor: "#0d6efd",
-                            borderColor: "#558bdb",
+                            backgroundColor: ColorHospitalized,
+                            borderColor: ColorHospitalizedBorder,
                             data: trendData.map(el => el[3])
                         }
                         ]
@@ -273,4 +281,19 @@ fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-c
 
         })
 
+    })
+
+fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-regioni.json")
+    .then(response => response.json())
+    .then(datiProvince => {
+
+        let sorted = datiProvince.reverse()
+        console.log(sorted);
+
+
+
+        let days = Array.from(new Set(sorted.map(el => el.data))).reverse()
+
+
+        document.querySelectorAll('#region')
     })
